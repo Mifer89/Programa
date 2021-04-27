@@ -1,0 +1,129 @@
+mport java.io.BufferedInputStream;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.Stack;
+import java.util.TreeMap;
+
+public class Programa {
+
+	public static void main(String[] args) throws IOException {
+		BufferedInputStream bis = new BufferedInputStream(System.in);
+		int nSemafors, nSemafors2;
+		do
+		{
+			nSemafors = processaSemafor(bis);
+			//nSemafors2 = processaSemafor2(bis);
+			if (nSemafors!=-1)
+				System.out.println(nSemafors);
+			//if (nSemafors2!=-1)
+			//	System.out.println(nSemafors2);
+		}while (nSemafors!=-1);//(nSemafors!=-1 && nSemafors2!=-1);
+	}
+
+	private static int processaSemafor2(BufferedInputStream bis) throws IOException {
+		String cad="";
+		int valor = bis.read();
+		char c = (char)valor;	
+		while (valor!=-1 && valor!=10)
+		{
+			cad+=c;
+			valor = bis.read();
+			c = (char)valor;	
+		}
+		
+		int nCanvis = 1;
+		int nSemafors=0;
+		while (nCanvis!=0)
+		{
+			nCanvis = count(cad, "RAV");
+			cad = cad.replaceAll("RAV", "");
+			nSemafors += nCanvis;
+		}
+		return nSemafors;
+	}
+	
+	public static int count(String text, String find) {
+        int index = 0, count = 0, length = find.length();
+        while( (index = text.indexOf(find, index)) != -1 ) {                
+                index += length; count++;
+        }
+        return count;
+	}
+
+	private static int processaSemafor(BufferedInputStream bis) throws IOException {
+		Stack<Character> pila = new Stack<Character>();
+		int nSemafors = 0;
+		char estat = 'V';
+		int valor = bis.read();
+		char c = (char)valor;	
+		while (valor!=-1 && valor!=10)
+		{
+			if (c=='R')
+			{
+				if (estat != 'V')
+					pila.push(estat);
+				estat = 'R';
+			}
+			else if (c=='A')
+			{
+				if (estat == 'R') {
+					estat = 'A';
+				}
+				else if (estat=='V'){
+					Character car = 'V';
+					if (!pila.isEmpty())
+						car = pila.pop();
+					if (car=='R')
+						estat = 'A';
+					else {
+						estat = 'V';
+						pila.clear();
+					}
+				}
+				else
+				{
+					estat = 'V';
+					pila.clear();
+				}
+			}
+			else if (c=='V')
+			{
+				if (estat=='A') {
+					estat = 'V';
+					nSemafors++;
+				}
+				else if (estat=='V') {
+					Character car = 'V';
+					if (!pila.isEmpty())
+						car = pila.pop();
+					
+					if (car=='A') {
+						estat = 'V';
+						nSemafors++;
+					}
+					else {
+						estat = 'V';
+						pila.clear();
+					}
+				}
+				else
+				{
+					estat = 'V';
+					pila.clear();
+				}
+			}
+			else
+			{
+				estat = 'V';
+				pila.clear();
+			}
+//			/System.out.print(c);
+			valor = bis.read();
+			c = (char)valor;
+		}
+		if (valor==-1)
+			return -1;
+		else
+			return nSemafors;		
+	}
+}
