@@ -1,0 +1,39 @@
+//Cas acabat en 0
+public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int cas = scanner.nextInt();
+        while (cas != 0) {
+            for (int i = 0; i < cas; i++) {
+
+            }
+
+            System.out.println("resultat");
+			cas = scanner.nextInt();
+        }
+    }
+	
+//numero casos
+public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int casos = scanner.nextInt();
+        for (int cas = 0; cas < casos; cas++) {
+            
+            System.out.println("resultat");
+        }
+    }
+
+//EOF
+public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        while (s.hasNext()) {
+            int nCorredors = s.nextInt();
+            ArrayList<Ciclista> ciclistas = new ArrayList<>();
+            s.nextLine();
+            for (int i = 0; i < nCorredors; i++) {
+
+            }
+
+            System.out.println("---");
+        }
+
+    }
